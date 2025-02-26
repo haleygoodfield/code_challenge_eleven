@@ -59,9 +59,43 @@ class Borrower {
 // Test Cases
 const borrower1 = new Borrower("Alice Johnson", 201);
 borrower1.borrowBook("The Great Gatsby");
-console.log(JSON.stringify(borrower1.borrowedBooks));
+console.log(JSON.stringify(borrower1.borrowedBooks)); // I forget when you are supposed to use this
 // Expected output: ["The Great Gatsby"]
 
 borrower1.returnBook("The Great Gatsby");
-console.log(borrower1.borrowedBooks);
+console.log(borrower1.borrowedBooks); // add stringify???
 // Expected output: []
+
+
+
+// Task 3: Creating a Library Class
+// Create a class Library with: books and borrowers
+class Library {
+    constructer() {
+        this.books = []; // array of Book instances
+        this.borrowers = []; // array of Borrower instances
+    }
+    // Adds a new book to the library
+    addBook(books) {
+        this.books.push(books);
+    }
+    // Logs all books details
+    listBooks() {
+        this.books.forEach(book => console.log(book.getDetails()));
+    }
+    // Adds new borrowers
+    addBorrowers() {
+        this.borrowers.push(borrower);
+    }
+    // Logs all borrowers 
+    listBorrowers() {
+        this.borrowers.forEach(borrower => console.log(borrower.getDetails()));
+    }
+}
+// Test Cases
+const inventory = new Inventory();
+inventory.addProduct(prod1);
+inventory.listProducts();
+// Expected output: "Product: Laptop, ID: 101, Price: $1200, Stock: 5"
+
+

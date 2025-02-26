@@ -71,7 +71,7 @@ console.log(borrower1.borrowedBooks); // add stringify???
 // Task 3: Creating a Library Class
 // Create a class Library with: books and borrowers
 class Library {
-    constructer() {
+    constructor() {
         this.books = []; // array of Book instances
         this.borrowers = []; // array of Borrower instances
     }
@@ -85,7 +85,7 @@ class Library {
     }
     // Adds new borrowers
     addBorrowers() {
-        this.borrowers.push(borrower);
+        this.borrowers.push(borrowers);
     }
     // Logs all borrowers 
     listBorrowers() {
@@ -93,9 +93,8 @@ class Library {
     }
 }
 // Test Cases
-const inventory = new Inventory();
-inventory.addProduct(prod1);
-inventory.listProducts();
-// Expected output: "Product: Laptop, ID: 101, Price: $1200, Stock: 5"
-
+const library = new Library();
+library.addBook(book1);
+library.listBooks();
+// Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
 

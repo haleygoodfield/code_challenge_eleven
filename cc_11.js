@@ -59,7 +59,7 @@ class Borrower {
 // Test Cases
 const borrower1 = new Borrower("Alice Johnson", 201);
 borrower1.borrowBook("The Great Gatsby");
-console.log(borrower1.borrowedBooks);
+console.log(JSON.stringify(borrower1.borrowedBooks));
 // Expected output: ["The Great Gatsby"]
 
 borrower1.returnBook("The Great Gatsby");

@@ -15,13 +15,13 @@ class Book {
 
     // Add a method updateCopies(quantity) that modifies the available copies when a book is borrowed or returned
     updateCopies(quantity) {
-        if (this.copies + quantity > 0) {
+        if (this.copies + quantity >= 0) {
             this.copies += quantity;
         } else {
             console.log("There are not enough copies available.")
         }
-    }
-}
+    };
+};
 // Test Cases
 const book1 = new Book("The Great Gatsby", "F. Scott Fitzgerald", 123456, 5);
 console.log(book1.getDetails());
@@ -48,22 +48,22 @@ class Borrower {
     }
     // Add a method returnBook(book) that Removes the book from borrowedBooks
     returnBook(book) {
-        const index = this.borrowedBooks.indexOf(book);
+        let index = this.borrowedBooks.findIndex(b => b.title === book);
         if (index !== -1) {
             this.borrowedBooks.splice(index, 1);  
         } else {
-            console.log(`${book} is not in borrowed list`)
+            console.log(`${book.title} is not in borrowed list`)
         }
-    }
-} 
+    };
+};
 // Test Cases
 const borrower1 = new Borrower("Alice Johnson", 201);
 borrower1.borrowBook("The Great Gatsby");
-console.log(JSON.stringify(borrower1.borrowedBooks)); // I forget when you are supposed to use this
+console.log(borrower1.borrowedBooks); 
 // Expected output: ["The Great Gatsby"]
 
 borrower1.returnBook("The Great Gatsby");
-console.log(borrower1.borrowedBooks); // add stringify???
+console.log(borrower1.borrowedBooks);
 // Expected output: []
 
 
@@ -82,37 +82,51 @@ class Library {
     // Logs all books details
     listBooks() {
         this.books.forEach(book => console.log(book.getDetails()));
-    }
-    // Adds new borrowers
-    addBorrowers(borrower) {
-        this.borrowers.push(borrower);
-    }
-    // Logs all borrowers 
-    listBorrowers() {
-        this.borrowers.forEach(borrower => console.log(borrower.getDetails()));
-    }
+    };
+
 
     // Task 4: Implementing Book Borrowing
     // Add a method lendBook(borrowerId, isbn) in the Library class
     lendBook(borrowerId, isbn) {
-        const book = this.books.find(book => book.isbn === isbn); // Checks if the book exists 
+        const book = this.books.find(b => b.isbn === isbn); // Checks if the book exists 
         if (!book) {
             console.log("Book is not in library");
             return;
         }
-        if (book.copies < 0) { // Checks if the book has available copies 
+        if (book.copies <= 0) { // Checks if the book has available copies 
             console.log("No copies availible");
             return;
         }
-        const borrower = this.borrowers.find(book => book.borrowerId === borrowerId);
+        const borrower = this.borrowers.find(bw => bw.borrowerId === borrowerId);
         if (!borrower) {
             console.log("Borrower not found");
             return;
         }
         book.updateCopies(-1); // Reduces the book’s copies by 1
-        borrower.borrrowBook(book.title); // Updates the borrower's borrowedBooks list
-    }
-}
+        borrower.borrowBook(book.title); // Updates the borrower's borrowedBooks list
+        console.log(`${book.title} has been borrowed`);
+    };
+
+
+    // Task 5: Implementing Book Returns
+    // Add a method returnBook(borrowerId, isbn) in the Library class
+    returnBook(borrowerId, isbn) {
+        const book = this.books.find(b => b.isbn === isbn);
+        const borrower = this.borrowers.find(bw => bw.borrowerId ===  borrowerId);
+        if (!book) {
+            console.log("No book found");
+            return;
+        } if (!borrower) {
+            console.log("No borrower found");
+            return;
+        } 
+        book.updateCopies(1);
+        borrower.returnBook(book.title);
+        console.log("Book returned");
+     }
+}; 
+
+
 // Test Cases: Task 3
 const library = new Library();
 library.addBook(book1);
@@ -125,3 +139,10 @@ console.log(book1.getDetails());
 // Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 3"
 console.log(borrower1.borrowedBooks);
 // Expected output: ["The Great Gatsby"]
+
+// Test Cases: Task 5
+library.returnBook(201, 123456);
+console.log(book1.getDetails());
+// Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+console.log(borrower1.borrowedBooks);
+// Expected output: []

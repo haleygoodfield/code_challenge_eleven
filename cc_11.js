@@ -44,20 +44,26 @@ class Borrower {
 
     // Add a method borrowBook(book) that Adds a book title to borrowedBooks
     borrowBook(book) {
+        if (typeof book === "string") { // Added to fix [undefined] in console
         this.borrowedBooks.push(book); 
+        } else {
+            this.borrowedBooks.push(book.title);
+        }
     }
     // Add a method returnBook(book) that Removes the book from borrowedBooks
     returnBook(book) {
-        let index = this.borrowedBooks.indexOf(book);
+        let bookTitle = typeof book === "string" ? book: book.title; // Added to fix [underfined] in console
+        let index = this.borrowedBooks.indexOf(bookTitle);
         if (index !== -1) {
             this.borrowedBooks.splice(index, 1);  
         } else {
-            console.log(`${book.title} is not in borrowed list`)
+            console.log(`${bookTitle} is not in borrowed list`)
         }
     };
 };
 // Test Cases
 const borrower1 = new Borrower("Alice Johnson", 201);
+
 borrower1.borrowBook("The Great Gatsby");
 console.log(borrower1.borrowedBooks); 
 // Expected output: ["The Great Gatsby"]
@@ -118,7 +124,7 @@ class Library {
             return;
         } 
         if (!borrower) {
-            console.log(`Borrower not found with Id: ${borrowerID}`);
+            console.log(`Borrower not found with Id: ${borrowerId}`);
             return;
         } else {
             book.updateCopies(1);

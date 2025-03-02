@@ -129,7 +129,7 @@ class Library {
         } else {
             book.updateCopies(1);
             borrower.returnBook(book);
-            console.log("Book returned");
+            console.log("Book Returned");
         }
     };
 };

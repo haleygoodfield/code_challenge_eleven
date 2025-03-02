@@ -48,7 +48,7 @@ class Borrower {
     }
     // Add a method returnBook(book) that Removes the book from borrowedBooks
     returnBook(book) {
-        let index = this.borrowedBooks.findIndex(b => b.title === book);
+        let index = this.borrowedBooks.indexOf(book);
         if (index !== -1) {
             this.borrowedBooks.splice(index, 1);  
         } else {
@@ -88,47 +88,49 @@ class Library {
     // Task 4: Implementing Book Borrowing
     // Add a method lendBook(borrowerId, isbn) in the Library class
     lendBook(borrowerId, isbn) {
-        const book = this.books.find(b => b.isbn === isbn); // Checks if the book exists 
+        let book = this.books.find((b) => b.isbn === isbn); // Checks if the book exists 
+        let borrower = this.borrowers.find((bw) => bw.borrowerId ===  borrowerId);
         if (!book) {
-            console.log("Book is not in library");
+            console.log(`Book for ISBN: ${isbn} is not in library`);
             return;
         }
-        if (book.copies <= 0) { // Checks if the book has available copies 
-            console.log("No copies availible");
-            return;
-        }
-        const borrower = this.borrowers.find(bw => bw.borrowerId === borrowerId);
         if (!borrower) {
-            console.log("Borrower not found");
+            console.log(`Borrower not found with Id: ${borrowerId}`);
             return;
         }
-        book.updateCopies(-1); // Reduces the book’s copies by 1
-        borrower.borrowBook(book.title); // Updates the borrower's borrowedBooks list
-        console.log(`${book.title} has been borrowed`);
+        if (book.copies > 0) { // Checks if the book has available copies 
+            book.updateCopies(-1); // Reduces the book’s copies by 1
+            borrower.borrowBook(book); // Updates the borrower's borrowedBooks list
+           console.log("Book Borrowed");
+        } else {
+            console.log(`${book.title} not in stock`);
+        }
     };
 
 
     // Task 5: Implementing Book Returns
     // Add a method returnBook(borrowerId, isbn) in the Library class
     returnBook(borrowerId, isbn) {
-        const book = this.books.find(b => b.isbn === isbn);
-        const borrower = this.borrowers.find(bw => bw.borrowerId ===  borrowerId);
+        let book = this.books.find((b) => b.isbn === isbn);
+        let borrower = this.borrowers.find((bw) => bw.borrowerId ===  borrowerId);
         if (!book) {
-            console.log("No book found");
-            return;
-        } if (!borrower) {
-            console.log("No borrower found");
+            console.log(`Book for ISBN: ${isbn} is not in library`);
             return;
         } 
-        book.updateCopies(1);
-        borrower.returnBook(book.title);
-        console.log("Book returned");
-     }
-}; 
-
+        if (!borrower) {
+            console.log(`Borrower not found with Id: ${borrowerID}`);
+            return;
+        } else {
+            book.updateCopies(1);
+            borrower.returnBook(book);
+            console.log("Book returned");
+        }
+    };
+};
 
 // Test Cases: Task 3
 const library = new Library();
+library.borrowers.push(borrower1)
 library.addBook(book1);
 library.listBooks();
 // Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"

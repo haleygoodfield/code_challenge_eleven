@@ -127,8 +127,8 @@ class Library {
             console.log(`Borrower not found with Id: ${borrowerId}`);
             return;
         } else {
-            book.updateCopies(1);
-            borrower.returnBook(book);
+            book.updateCopies(1); // Increases the book’s available copies
+            borrower.returnBook(book); // Removes the book from the borrower’s borrowed list
             console.log("Book Returned");
         }
     };
